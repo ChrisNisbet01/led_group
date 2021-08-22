@@ -224,7 +224,7 @@ int main(int argc, char const * argv[])
 
     int const first_arg_for_led_group = 2;
 
-    for (int arg =  first_arg_for_led_group; arg < argc; arg++)
+    for (int arg = first_arg_for_led_group; arg < argc; arg++)
     {
         if (!add_led_by_name_to_led_group(&led_group, argv[arg]))
         {
