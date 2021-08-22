@@ -197,7 +197,8 @@ done:
     return fd;
 }
 
-int main(int argc, char const * argv[])
+int
+main(int argc, char const * argv[])
 {
     int exit_code;
     int fd = -1;
