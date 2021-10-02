@@ -1,1 +1,5 @@
 /led_group
+/build/
+*.vtg
+*.vpwhistu
+*.vpw

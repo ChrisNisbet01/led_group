@@ -4,7 +4,8 @@
  * led_group.c
  *
  * This program creates a new userspace LED class device and monitors it.
- * A timestamp and brightness value is printed each time the brightness changes.
+ * If included, a timestamp and brightness value is printed each time the
+ * brightness changes.
  *
  * Usage: led_group <group_leader_led_name> <led1> <led2>
  *
@@ -15,8 +16,13 @@
  *
  * Pressing CTRL+C will exit.
  */
+#include "config.h"
 
 #include <linux/uleds.h>
+
+#ifdef HAVE_STRLCPY
+#include <bsd/string.h>
+#endif
 
 #include <errno.h>
 #include <fcntl.h>
@@ -24,10 +30,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#if WITH_TIMESTAMP
+#if WITH_LOGGING
 #include <time.h>
 #endif
 #include <unistd.h>
+
 
 #define MAX_LEDS_IN_GROUP 4
 #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
@@ -39,7 +46,7 @@ struct led_group
     int led_fds[MAX_LEDS_IN_GROUP];
 };
 
-#if HAVE_STRLCPY == 0
+#ifndef HAVE_STRLCPY
 static char *
 strlcpy(char * const dest, char const * const src, size_t const len)
 {
@@ -150,7 +157,7 @@ track_led_brightness(int const fd, struct led_group const * const led_group)
             goto done;
         }
 
-#if WITH_TIMESTAMP
+#if WITH_LOGGING
         struct timespec ts;
 
         clock_gettime(CLOCK_MONOTONIC, &ts);
